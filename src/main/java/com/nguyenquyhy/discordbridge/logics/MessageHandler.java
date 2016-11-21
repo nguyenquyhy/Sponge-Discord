@@ -4,6 +4,7 @@ import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
+import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.entities.message.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,13 +28,14 @@ public class MessageHandler {
         Logger logger = mod.getLogger();
         GlobalConfig config = mod.getConfig();
 
+        String botid = mod.getBotClient().getYourself().getId();
         String content = TextUtil.formatDiscordEmoji(message.getContent());
         for (ChannelConfig channelConfig : config.channels) {
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)
-                    && !message.getAuthor().getId().equals("249826927383281664")
+                    && !message.getAuthor().getId().equals(botid)
                     && !content.contains("!players")
                     && !content.contains("!ip")
                     && !content.contains("!website")
