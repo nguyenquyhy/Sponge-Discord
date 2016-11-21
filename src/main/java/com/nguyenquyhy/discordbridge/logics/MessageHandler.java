@@ -33,7 +33,7 @@ public class MessageHandler {
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)
-                    && !message.getAuthor().getName() = "249826927383281664";
+                    && !message.getAuthor().getName() != 249826927383281664
                     && !content.contains(TextUtil.SPECIAL_CHAR) /* Not sending back message from this plugin */) {
                 String author = message.getAuthor().getName();
                 Text formattedMessage = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
