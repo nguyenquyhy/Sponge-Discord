@@ -36,6 +36,17 @@ import java.util.*;
                 @Dependency(id = "luckperms")
         }
 public class DiscordBridge {
+        
+        public static String getPlayerGroup(Player player, List<String> possibleGroups) {
+    for (String group : possibleGroups) {
+        if (player.hasPermission("group." + group)) {
+            return group;
+        }
+    }
+    return null;
+}
+        
+        
     private DiscordAPI consoleClient = null;
     private final Map<UUID, DiscordAPI> humanClients = new HashMap<>();
     private DiscordAPI botClient = null;
