@@ -2,7 +2,7 @@ This is a fork from https://github.com/nguyenquyhy/Sponge-Discord
 
 with minor changes
 
---LICENSE--
+#License
 
 **The MIT License (MIT)**
 
