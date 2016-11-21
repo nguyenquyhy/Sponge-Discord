@@ -1,6 +1,8 @@
-This is a fork from https://github.com/nguyenquyhy/Sponge-Discord
+This is a fork of https://github.com/nguyenquyhy/Sponge-Discord
 
-with minor changes
+with following changes:
+- Messages from bot user won't send in-game
+- Commands !players !ip and !website won't send in-game
 
 #License
 
