@@ -31,22 +31,9 @@ import java.util.*;
  * Created by Hy on 1/4/2016.
  */
 @Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.1.0",
-        description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy"}),
-        dependencies = {
-                @Dependency(id = "luckperms")
-        }
+        description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy"})
 public class DiscordBridge {
-        
-        public static String getPlayerGroup(Player player, List<String> possibleGroups) {
-    for (String group : possibleGroups) {
-        if (player.hasPermission("group." + group)) {
-            return group;
-        }
-    }
-    return null;
-}
-        
-        
+            
     private DiscordAPI consoleClient = null;
     private final Map<UUID, DiscordAPI> humanClients = new HashMap<>();
     private DiscordAPI botClient = null;
