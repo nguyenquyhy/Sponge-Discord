@@ -2,7 +2,7 @@ This is a fork of https://github.com/nguyenquyhy/Sponge-Discord
 
 with following changes:
 - Messages from bot user won't send in-game
-- Commands !players !ip and !website won't send in-game
+- Commands `!players` `!ip` and `!website` won't send in-game
 
 #License
 
