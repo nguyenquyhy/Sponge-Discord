@@ -33,7 +33,8 @@ public class MessageHandler {
         	if(StringUtils.isNotBlank(config.prefixBlacklist)){
         		if(content.startsWith(config.prefixBlacklist)){
         			return;
-        	}}        			
+        		}
+        	}        			
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
