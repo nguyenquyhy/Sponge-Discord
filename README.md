@@ -5,10 +5,15 @@ with following changes:
 - Commands `!players` `!ip` and `!website` won't send in-game
 
 If for any weird reason want to build my fork:
+
 1. Click `Clone or download`
+
 2. Click `Download ZIP`
+
 3. Unzip the file
+
 4. Run gradlew.bat
+
 5. The file ends up in `/build/libs/Sponge-Discord-vFork-x.x.x-all.jar`
 
 #License
