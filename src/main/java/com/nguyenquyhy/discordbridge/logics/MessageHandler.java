@@ -34,12 +34,16 @@ public class MessageHandler {
         		if(content.startsWith(config.prefixBlacklist)){
         			return;
         		}
-        	}        			
+        	} 
+        	if(config.cancelMessageFromBot == true){
+        		if(message.getAuthor().getId().equals(botid)){
+        			return;
+        		}
+        	}   
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)
-                    && !message.getAuthor().getId().equals(botid)
                     && !content.contains(TextUtil.SPECIAL_CHAR) /* Not sending back message from this plugin */) {
             	String author = message.getAuthor().getName();
                 Text formattedMessage = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
