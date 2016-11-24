@@ -14,6 +14,7 @@ public class GlobalConfig {
     public GlobalConfig() {
         channels = new ArrayList<>();
         tokenStore = TokenStore.JSON;
+        prefixBlacklist = "";
         minecraftBroadcastTemplate = "&2<BROADCAST> %s";
         botToken = "";
     }
@@ -22,6 +23,8 @@ public class GlobalConfig {
     public String botToken;
     @Setting
     public TokenStore tokenStore;
+    @Setting
+    public String prefixBlacklist;
     @Setting
     public String minecraftBroadcastTemplate;
     @Setting
