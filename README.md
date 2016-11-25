@@ -65,6 +65,7 @@ Configuration is stored in `config.json` file.
   - `minecraftBroadcastTemplate`: template for messages in Minecraft from `/discord broadcast` command
   - `prefixBlacklist`: a list of prefix string (e.g. `["!"]`) that will be ignored by the plugin _(thanks, Vankka2)_
   - `cancelAllMessagesFromBot`: cancel all messages from Bot or only messages sent by the plugin _(thanks, Vankka2)_
+  - `linkDiscordAttachments`: adds a clickable link in game for attachments sent via discord _(thanks, Mohron)_
   - `channels`: a list of channel configurations
 - Channel config
   - `discordId`: the ID of the Discord channel (usually a 18-digit number)
@@ -84,7 +85,7 @@ You can find some example configurations in `examples` folders.
 ### How to get channel ID
 
 1. Get the URL to the channel
-   - If you are using the Dicord app, simply right click on on channel name and choose copy link and paste the link some where
+   - If you are using the Discord app, simply right click on on channel name and choose copy link and paste the link somewhere
    
    ![http://i.imgur.com/8scvoyS.png](http://i.imgur.com/8scvoyS.png)
    - If you are not using the Discord app, navigate to the channel from discordapp.com and look at the address bar of your browser
@@ -101,7 +102,7 @@ You can find some example configurations in `examples` folders.
 
 - [ ] Group-based prefix
 - [ ] Handle custom Sponge channels (e.g. MCClan and staff chat of Nucleus)
-- [ ] Image upload in Discord should show links in Minecraft
+- [X] Image upload in Discord should show links in Minecraft
 - [ ] A command to check Bot connection status
 - [ ] New config to allow executing Minecraft command from Discord
 - [ ] New config to route Minecraft server log to Discord

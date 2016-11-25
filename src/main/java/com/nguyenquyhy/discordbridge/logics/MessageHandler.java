@@ -5,14 +5,13 @@ import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.message.Message;
+import de.btobastian.javacord.entities.message.MessageAttachment;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.format.TextColors;
 
 /**
  * Created by Hy on 8/6/2016.
@@ -45,13 +44,23 @@ public class MessageHandler {
             if (!config.cancelAllMessagesFromBot && content.contains(TextUtil.SPECIAL_CHAR)) {
                 return;
             }
-
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
                 String author = message.getAuthor().getName();
-                Text formattedMessage = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
+                Text messageText = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
+                if (config.linkDiscordAttachments && message.getAttachments() != null) {
+                    for (MessageAttachment attachment:message.getAttachments()) {
+                        messageText = Text.join(messageText,
+                                Text.builder(" [Attachment]")
+                                .color(TextColors.DARK_AQUA)
+                                .onClick(TextActions.openUrl(attachment.getUrl()))
+                                .onHover(TextActions.showText(Text.of("Click to open attachment.")))
+                                .build());
+                    }
+                }
+                Text formattedMessage = messageText;
                 // This case is used for default account
                 logger.info(formattedMessage.toPlain());
                 Sponge.getServer().getOnlinePlayers().forEach(p -> p.sendMessage(formattedMessage));
