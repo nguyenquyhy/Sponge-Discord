@@ -17,6 +17,7 @@ public class GlobalConfig {
         prefixBlacklist = new ArrayList<>();
         linkDiscordAttachments = true;
         cancelAllMessagesFromBot = true;
+        botDiscordGame = "Minecraft";
         minecraftBroadcastTemplate = "&2<BROADCAST> %s";
         botToken = "";
     }
@@ -31,6 +32,8 @@ public class GlobalConfig {
     public Boolean linkDiscordAttachments;
     @Setting
     public Boolean cancelAllMessagesFromBot;
+    @Setting
+    public String botDiscordGame;
     @Setting
     public String minecraftBroadcastTemplate;
     @Setting

@@ -41,12 +41,12 @@ A short summary is below:
 
 | Command | Shorthand | Permission |
 |---------|-----------|------------|
-| `/discord login` | `/d l` | `spongediscord.login` |
-| `/discord otp` | `/d otp` | `spongediscord.login` |
-| `/discord logout` | `/d lo` | `spongediscord.login` |
-| `/discord broadcast <message>` | `/d b <message>` | `spongediscord.broadcast` |
-| `/discord status` | `/d s` | `spongediscord.status` |
-| `/discord reload` | `/d reload` | `spongediscord.reload` |
+| `/discord login` | `/d l` | `discordbridge.login` |
+| `/discord otp` | `/d otp` | `discordbridge.login` |
+| `/discord logout` | `/d lo` | `discordbridge.login` |
+| `/discord broadcast <message>` | `/d b <message>` | `discordbridge.broadcast` |
+| `/discord status` | `/d s` | `discordbridge.status` |
+| `/discord reload` | `/d reload` | `discordbridge.reload` |
 
 Some ideas for future commands
 
@@ -63,9 +63,10 @@ Configuration is stored in `config.json` file.
   - `botToken`: App Bot User's token
   - `tokenStore`: `JSON` (default) or `NONE` (user authentication will be disabled) or `InMemory` (mainly for testing)
   - `minecraftBroadcastTemplate`: template for messages in Minecraft from `/discord broadcast` command
-  - `prefixBlacklist`: a list of prefix string (e.g. `["!"]`) that will be ignored by the plugin _(thanks, Vankka2)_
-  - `cancelAllMessagesFromBot`: cancel all messages from Bot or only messages sent by the plugin _(thanks, Vankka2)_
+  - `prefixBlacklist`: a list of prefix string (e.g. `["!"]`) that will be ignored by the plugin _(thanks, Vankka)_
+  - `cancelAllMessagesFromBot`: cancel all messages from Bot or only messages sent by the plugin _(thanks, Vankka)_
   - `linkDiscordAttachments`: adds a clickable link in game for attachments sent via discord _(thanks, Mohron)_
+  - `botDiscordGame`: sets the game of the bot in Discord _(thanks, Vankka)_
   - `channels`: a list of channel configurations
 - Channel config
   - `discordId`: the ID of the Discord channel (usually a 18-digit number)

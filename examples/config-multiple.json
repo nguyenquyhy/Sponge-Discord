@@ -4,6 +4,7 @@
   "prefixBlacklist": ["!"],
   "cancelAllMessagesFromBot": false,
   "linkDiscordAttachments": true,
+  "botDiscordGame": "Minecraft",
   "minecraftBroadcastTemplate": "&2<BROADCAST> %s",
   "channels": [
     {
