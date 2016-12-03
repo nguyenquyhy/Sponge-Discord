@@ -3,6 +3,7 @@
   "botToken": "APP_BOT_USER_TOKEN",
   "prefixBlacklist": ["!"],
   "cancelAllMessagesFromBot": true,
+  "linkDiscordAttachments": true,
   "minecraftBroadcastTemplate": "&2<BROADCAST> %s",
   "channels": [
     {
@@ -20,7 +21,10 @@
         "broadcastTemplate": "_<BROADCAST> %s_"
       },
       "minecraft": {
-        "chatTemplate": "&7<%a> &f%s"
+        "chatTemplate": "&7<%a> &f%s",
+        "attachmentTemplate": "[Attachment]",
+        "attachmentHoverTemplate": "Click to open attachment.",
+        "attachmentColor": "&3"
       }
     }
   ]

@@ -141,6 +141,76 @@ public class TextUtil {
         return Text.join(texts);
     }
 
+    public static TextColor resolveTextColor(String s) {
+        switch (s.toUpperCase()){
+            case "§0":
+            case "&0":
+            case "000000":
+                return TextColors.BLACK;
+            case "§1":
+            case "&1":
+            case "0000AA":
+                return TextColors.DARK_BLUE;
+            case "§2":
+            case "&2":
+            case "00AA00":
+                return TextColors.DARK_GREEN;
+            case "§3":
+            case "&3":
+            case "00AAAA":
+                return TextColors.DARK_AQUA;
+            case "§4":
+            case "&4":
+            case "AA0000":
+                return TextColors.DARK_RED;
+            case "§5":
+            case "&5":
+            case "AA00AA":
+                return TextColors.DARK_PURPLE;
+            case "§6":
+            case "&6":
+            case "FFAA00":
+                return TextColors.GOLD;
+            case "§7":
+            case "&7":
+            case "AAAAAA":
+                return TextColors.GRAY;
+            case "§8":
+            case "&8":
+            case "555555":
+                return TextColors.DARK_GRAY;
+            case "§9":
+            case "&9":
+            case "5555FF":
+                return TextColors.BLUE;
+            case "§a":
+            case "&a":
+            case "55FF55":
+                return TextColors.GREEN;
+            case "§b":
+            case "&b":
+            case "55FFFF":
+                return TextColors.AQUA;
+            case "§c":
+            case "&c":
+            case "FF5555":
+                return TextColors.RED;
+            case "§d":
+            case "&d":
+            case "FF55FF":
+                return TextColors.LIGHT_PURPLE;
+            case "§e":
+            case "&e":
+            case "FFFF55":
+                return TextColors.YELLOW;
+            case "§f":
+            case "&f":
+            case "FFFFFF":
+                return TextColors.WHITE;
+            default: return TextColors.RESET;
+        }
+    }
+
     private static StyleTuple getLastColourAndStyle(Text text, StyleTuple current) {
         List<Text> texts = flatten(text);
         TextColor tc = TextColors.NONE;

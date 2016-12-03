@@ -77,6 +77,9 @@ Configuration is stored in `config.json` file.
     - `broadcastTemplate`: (optional) template for messages in Discord from `/discord broadcast` command
   - `minecraft`: templates in Minecraft
     - `chatTemplate`: (optional) template for messages from Discord to Minecraft
+    - `attachmentTemplate`: (required for linkDiscordAttachments) template for Discord attachments linked in Minecraft _(thanks, Mohron)_
+    - `attachmentColor`: (optional) designate a color to be applied to attachmentTemplate (ie `&0` or `§0`) _(thanks, Mohron)_
+    - `attachmentHoverTemplate`: (optional) template for the message shown when you hover over an attachment link _(thanks, Mohron)_
 
 You can find some example configurations in `examples` folders.
 

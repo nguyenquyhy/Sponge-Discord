@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
-import org.spongepowered.api.text.format.TextColors;
 
 /**
  * Created by Hy on 8/6/2016.
@@ -50,13 +49,16 @@ public class MessageHandler {
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
                 String author = message.getAuthor().getName();
                 Text messageText = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
-                if (config.linkDiscordAttachments && message.getAttachments() != null) {
+                if (config.linkDiscordAttachments
+                        && StringUtils.isNotBlank(channelConfig.minecraft.attachmentTemplate)
+                        && message.getAttachments() != null) {
                     for (MessageAttachment attachment:message.getAttachments()) {
+                        String spacing = message.getContent().equals("") ?  "" : " ";
                         messageText = Text.join(messageText,
-                                Text.builder(" [Attachment]")
-                                .color(TextColors.DARK_AQUA)
+                                Text.builder(spacing + channelConfig.minecraft.attachmentTemplate)
+                                .color(TextUtil.resolveTextColor(channelConfig.minecraft.attachmentColor))
                                 .onClick(TextActions.openUrl(attachment.getUrl()))
-                                .onHover(TextActions.showText(Text.of("Click to open attachment.")))
+                                .onHover(TextActions.showText(Text.of(channelConfig.minecraft.attachmentHoverTemplate)))
                                 .build());
                     }
                 }

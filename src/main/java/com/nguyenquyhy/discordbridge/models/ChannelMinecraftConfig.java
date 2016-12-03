@@ -10,8 +10,17 @@ import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 public class ChannelMinecraftConfig {
     void initializeDefault() {
         chatTemplate = "&7<%a> &f%s";
+        attachmentTemplate = "[Attachment]";
+        attachmentColor = "&3";
+        attachmentHoverTemplate = "Click to open attachment.";
     }
 
     @Setting
     public String chatTemplate;
+    @Setting
+    public String attachmentTemplate;
+    @Setting
+    public String attachmentColor;
+    @Setting
+    public String attachmentHoverTemplate;
 }
