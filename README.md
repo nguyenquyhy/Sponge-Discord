@@ -11,6 +11,10 @@ This is a [Sponge](http://spongepowered.com) plugin to integrate [Minecraft](htt
   - 1 public channel to send & receive messages between Discord and Minecraft
   - 1 monitoring channel to record only server start/stop and player join/leave events
   - 1 staff-only channel that send message one-way from Discord to Minecraft with a special announcement template
+- **New in 2.2.0**
+  - Set game activity of the bot
+  - Ignore Discord messages from all bots and/or blacklist certain prefixes
+  - Support One-Time Password
 
 ## Getting Started for server owners and players
 
@@ -31,7 +35,7 @@ This is a [Sponge](http://spongepowered.com) plugin to integrate [Minecraft](htt
 ## Commands
 
 - `/discord login`: login to Discord and bind the Discord account to the Minecraft account for automatic login in the future. The email and password will not be stored; instead, the access token of the user will be stored in the config folder on the server.
-- `/discord opt`: One-time password for Discord login _(thanks Prototik)_.
+- `/discord otp`: One-time password for Discord login _(thanks Prototik)_.
 - `/discord logout`: logout of Discord and unbind the Discord account from the Minecraft account. 
 - `/discord broadcast`: as this plugin cannot capture server's `/say` at the moment, this command is to send a message to all online players and Discord. This command requires having the default account set up.
 - `/discord status`: show current connection status.
@@ -61,12 +65,12 @@ Configuration is stored in `config.json` file.
 
 - Global config
   - `botToken`: App Bot User's token
-  - `tokenStore`: `JSON` (default) or `NONE` (user authentication will be disabled) or `InMemory` (mainly for testing)
+  - `botDiscordGame`: sets the current game activity of the bot in Discord _(thanks, Vankka)_
+  - `tokenStore`: `JSON` (default) or `NONE` (user authentication will be disabled) or `InMemory` (mainly for testing). This is used for player authentication.
   - `minecraftBroadcastTemplate`: template for messages in Minecraft from `/discord broadcast` command
   - `prefixBlacklist`: a list of prefix string (e.g. `["!"]`) that will be ignored by the plugin _(thanks, Vankka)_
-  - `cancelAllMessagesFromBot`: cancel all messages from Bot or only messages sent by the plugin _(thanks, Vankka)_
+  - `ignoreBots`: ignore all messages from any Discord Bots _(thanks, Vankka)_
   - `linkDiscordAttachments`: adds a clickable link in game for attachments sent via discord _(thanks, Mohron)_
-  - `botDiscordGame`: sets the game of the bot in Discord _(thanks, Vankka)_
   - `channels`: a list of channel configurations
 - Channel config
   - `discordId`: the ID of the Discord channel (usually a 18-digit number)
@@ -88,15 +92,8 @@ You can find some example configurations in `examples` folders.
 
 ### How to get channel ID
 
-1. Get the URL to the channel
-   - If you are using the Discord app, simply right click on on channel name and choose copy link and paste the link somewhere
-   
-   ![http://i.imgur.com/8scvoyS.png](http://i.imgur.com/8scvoyS.png)
-   - If you are not using the Discord app, navigate to the channel from discordapp.com and look at the address bar of your browser
-   
-   ![http://i.imgur.com/MT2OWKC.png](http://i.imgur.com/MT2OWKC.png)
-
-1. The link should be in this format `https://discordapp.com/{serverID}/{channelID}`, so the channel ID is the last 18 digit number in this link.
+1. Open `User Settings` in Discord, then open `Appearance` section and tick `Developer Mode`
+1. Right click any channel and click `Copy ID`
 
 ## CHANGELOG
 
@@ -104,6 +101,12 @@ You can find some example configurations in `examples` folders.
 
 ## TODO
 
+* 2.3.0
+- [ ] Mentions in Discord should show proper names in Minecraft
+- [ ] Attachments in Discord should show proper links in Minecraft
+
+* Future
+- [ ] MySQL token store
 - [ ] Group-based prefix
 - [ ] Handle custom Sponge channels (e.g. MCClan and staff chat of Nucleus)
 - [X] Image upload in Discord should show links in Minecraft

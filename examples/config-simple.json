@@ -1,10 +1,10 @@
 {
   "tokenStore": "JSON",
   "botToken": "APP_BOT_USER_TOKEN",
-  "prefixBlacklist": ["!"],
-  "cancelAllMessagesFromBot": true,
   "linkDiscordAttachments": true,
   "botDiscordGame": "Minecraft",
+  "prefixBlacklist": ["!"],
+  "ignoreBots": true,
   "minecraftBroadcastTemplate": "&2<BROADCAST> %s",
   "channels": [
     {

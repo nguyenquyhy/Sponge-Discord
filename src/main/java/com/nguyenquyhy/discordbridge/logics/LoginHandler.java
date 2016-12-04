@@ -9,6 +9,7 @@ import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.database.IStorage;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.DiscordAPI;
@@ -65,7 +66,6 @@ public class LoginHandler {
     }
 
     /**
-     *
      * @param player
      * @return
      */
@@ -196,10 +196,10 @@ public class LoginHandler {
                 if (user != null)
                     name = user.getName();
                 String text = "Bot account " + name + " will be used for all unauthenticated users!";
-                if(StringUtils.isNotBlank(config.botDiscordGame)) {
-                	client.setGame(config.botDiscordGame);
-                }else{
-                	client.setGame(null);
+                if (StringUtils.isNotBlank(config.botDiscordGame)) {
+                    client.setGame(config.botDiscordGame);
+                } else {
+                    client.setGame(null);
                 }
                 if (commandSource != null)
                     commandSource.sendMessage(Text.of(TextColors.GOLD, TextStyles.BOLD, text));
@@ -316,13 +316,14 @@ public class LoginHandler {
                     playerName = player.getName();
                 }
                 if (StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
-                    channel.sendMessage(String.format(channelConfig.discord.joinedTemplate, playerName), false);
+                    String content = String.format(channelConfig.discord.joinedTemplate, playerName);
+                    ChannelUtil.sendMessage(channel, content);
                 }
                 logger.info(playerName + " connected to Discord channel " + channelConfig.discordId + ".");
             } else {
                 logger.info("Bot account has connected to Discord channel " + channelConfig.discordId + ".");
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
-                    channel.sendMessage(TextUtil.formatForDiscord(channelConfig.discord.serverUpMessage, config), false);
+                    ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
                 }
             }
         }

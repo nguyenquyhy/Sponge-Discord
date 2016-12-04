@@ -3,6 +3,7 @@ package com.nguyenquyhy.discordbridge.logics;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.message.MessageAttachment;
@@ -26,10 +27,8 @@ public class MessageHandler {
         Logger logger = mod.getLogger();
         GlobalConfig config = mod.getConfig();
 
-        String botId = mod.getBotClient().getYourself().getId();
         String content = TextUtil.formatDiscordMessage(message.getContent());
         for (ChannelConfig channelConfig : config.channels) {
-
             if (config.prefixBlacklist != null) {
                 for (String prefix : config.prefixBlacklist) {
                     if (StringUtils.isNotBlank(prefix) && content.startsWith(prefix)) {
@@ -37,10 +36,10 @@ public class MessageHandler {
                     }
                 }
             }
-            if (config.cancelAllMessagesFromBot && message.getAuthor().getId().equals(botId)) {
+            if (config.ignoreBots && message.getAuthor().isBot()) {
                 return;
             }
-            if (!config.cancelAllMessagesFromBot && content.contains(TextUtil.SPECIAL_CHAR)) {
+            if (message.getNonce() != null && message.getNonce().equals(ChannelUtil.SPECIAL_CHAR)) {
                 return;
             }
             if (StringUtils.isNotBlank(channelConfig.discordId)
