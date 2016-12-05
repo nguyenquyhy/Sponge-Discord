@@ -13,6 +13,7 @@ public class ChannelMinecraftConfig {
         attachmentTemplate = "[Attachment]";
         attachmentColor = "&3";
         attachmentHoverTemplate = "Click to open attachment.";
+        defaultRole = "Member";
     }
 
     @Setting
@@ -23,4 +24,6 @@ public class ChannelMinecraftConfig {
     public String attachmentColor;
     @Setting
     public String attachmentHoverTemplate;
+    @Setting
+    public String defaultRole;
 }

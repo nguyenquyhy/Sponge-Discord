@@ -3,7 +3,10 @@ package com.nguyenquyhy.discordbridge.utils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
-import com.nguyenquyhy.discordbridge.models.GlobalConfig;
+import com.nguyenquyhy.discordbridge.models.ChannelConfig;
+import de.btobastian.javacord.entities.User;
+import de.btobastian.javacord.entities.message.Message;
+import de.btobastian.javacord.entities.permissions.Role;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColor;
@@ -12,6 +15,7 @@ import org.spongepowered.api.text.format.TextStyle;
 import org.spongepowered.api.text.format.TextStyles;
 import org.spongepowered.api.text.serializer.TextSerializers;
 
+import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -26,6 +30,7 @@ import java.util.regex.Pattern;
 public class TextUtil {
     private static final Pattern urlPattern =
             Pattern.compile("(?<first>(^|\\s))(?<colour>(&[0-9a-flmnork])+)?(?<url>(http(s)?://)?([A-Za-z0-9]+\\.)+[A-Za-z0-9]{2,}\\S*)", Pattern.CASE_INSENSITIVE);
+    private static final  Pattern MENTION_PATTERN = Pattern.compile("<@!?[0-9]{18}>");
 
     private static final StyleTuple EMPTY = new StyleTuple(TextColors.NONE, TextStyles.NONE);
 
@@ -59,7 +64,7 @@ public class TextUtil {
         return text;
     }
 
-    public static Text formatUrl(String message) {
+    public static Text formatForMinecraft(String message) {
         Preconditions.checkNotNull(message, "message");
         if (message.isEmpty()) {
             return Text.EMPTY;
@@ -133,6 +138,17 @@ public class TextUtil {
         return Text.join(texts);
     }
 
+    public static String formatMentions(Message message) {
+        String s = message.getContent();
+
+        for (User mention: message.getMentions()) {
+            DiscordBridge.getInstance().getLogger().info("Found Mention: @" + mention.getName() + ":" + mention.getId());
+            s = s.replace("<@"+mention.getId()+">","@" + mention.getName());
+            s = s.replace("<@!"+mention.getId()+">","@" + mention.getName()); // Change to getNickname() When supported
+        }
+        return s;
+    }
+
     public static TextColor resolveTextColor(String s) {
         switch (s.toUpperCase()){
             case "§0":
@@ -201,6 +217,26 @@ public class TextUtil {
                 return TextColors.WHITE;
             default: return TextColors.RESET;
         }
+    }
+
+    public static String replacePlaceholders(ChannelConfig config, Message message){
+        String s = config.minecraft.chatTemplate;
+        s = s.replace("%a", message.getAuthor().getName());
+        // Javacord doesn't support nicknames yet!
+        //s = s.replace("%n", message.getAuthor().getNickname());
+        int position = 0;
+        String roleName = config.minecraft.defaultRole;
+        Color roleColor;
+        for (Role role: message.getAuthor().getRoles(message.getChannelReceiver().getServer())){
+            if (role.getPosition() > position) {
+                position = role.getPosition();
+                roleName = role.getName();
+                roleColor = role.getColor();
+            }
+        }
+        s = true ? s.replace("%r", roleName): s.replace("%r", roleColor + roleName);
+
+        return String.format(s, TextUtil.formatDiscordMessage(message.getContent()));
     }
 
     private static StyleTuple getLastColourAndStyle(Text text, StyleTuple current) {

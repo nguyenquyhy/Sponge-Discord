@@ -27,7 +27,7 @@ public class MessageHandler {
         Logger logger = mod.getLogger();
         GlobalConfig config = mod.getConfig();
 
-        String content = TextUtil.formatDiscordMessage(message.getContent());
+        String content = TextUtil.formatDiscordMessage(TextUtil.formatMentions(message));
         for (ChannelConfig channelConfig : config.channels) {
             if (config.prefixBlacklist != null) {
                 for (String prefix : config.prefixBlacklist) {
@@ -46,8 +46,7 @@ public class MessageHandler {
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
-                String author = message.getAuthor().getName();
-                Text messageText = TextUtil.formatUrl(String.format(channelConfig.minecraft.chatTemplate.replace("%a", author), content));
+                Text messageText = TextUtil.formatForMinecraft(TextUtil.replacePlaceholders(channelConfig, message));
                 if (config.linkDiscordAttachments
                         && StringUtils.isNotBlank(channelConfig.minecraft.attachmentTemplate)
                         && message.getAttachments() != null) {
