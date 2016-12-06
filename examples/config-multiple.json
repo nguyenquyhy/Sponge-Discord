@@ -21,7 +21,9 @@
         "chatTemplate": "&7<%a> &f%s",
         "attachmentTemplate": "[Attachment]",
         "attachmentHoverTemplate": "Click to open attachment.",
-        "attachmentColor": "&3"
+        "attachmentColor": "&3",
+        "defaultRole": "&eMember",
+        "roleBlacklist": ["Bot"]
       }
     },
     {
