@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 public class TextUtil {
     private static final Pattern urlPattern =
             Pattern.compile("(?<first>(^|\\s))(?<colour>(&[0-9a-flmnork])+)?(?<url>(http(s)?://)?([A-Za-z0-9]+\\.)+[A-Za-z0-9]{2,}\\S*)", Pattern.CASE_INSENSITIVE);
-    private static final  Pattern MENTION_PATTERN = Pattern.compile("<@!?[0-9]{18}>");
 
     private static final StyleTuple EMPTY = new StyleTuple(TextColors.NONE, TextStyles.NONE);
 
@@ -64,7 +63,44 @@ public class TextUtil {
         return text;
     }
 
-    public static Text formatForMinecraft(String message) {
+    public static String formatForMinecraft(ChannelConfig config, Message message) {
+        // Replace %a with Message author's Name
+        String s = config.minecraft.chatTemplate.replace("%a", message.getAuthor().getName());
+
+        // Replace %n with Message author's Nickname (Not yet supported)
+        //s = s.replace("%n", message.getAuthor().getNickname());
+
+        // Get author's highest role
+        int position = 0;
+        String roleName = config.minecraft.defaultRole;
+        Color roleColor = Color.WHITE;
+        for (Role role: message.getAuthor().getRoles(message.getChannelReceiver().getServer())){
+            if (role.getPosition() > position && !config.minecraft.roleBlacklist.contains(role.getName())) {
+                position = role.getPosition();
+                roleName = role.getName();
+                roleColor = role.getColor();
+            }
+        }
+        // Replace %r with Message author's highest role
+        s = s.replace("%r", roleName);
+        // Replace %c with Message MC color code if compatible with author's highest role color
+        s = s.replace("%c", ColorUtil.getColorCode(roleColor));
+        // Replace %g with Message author's game
+        String game = message.getAuthor().getGame();
+        if (game != null) s = s.replace("%g", game);
+
+        s = String.format(s, message.getContent());
+
+        // Replace Mentions with readable names
+        for (User mention: message.getMentions()) {
+            s = s.replace("<@"+mention.getId()+">","@" + mention.getName());
+            s = s.replace("<@!"+mention.getId()+">","@" + mention.getName()); // Change to getNickname() when supported
+        }
+
+        return TextUtil.formatDiscordMessage(s);
+    }
+
+    public static Text formatUrl(String message) {
         Preconditions.checkNotNull(message, "message");
         if (message.isEmpty()) {
             return Text.EMPTY;
@@ -136,107 +172,6 @@ public class TextUtil {
 
         // Join it all together.
         return Text.join(texts);
-    }
-
-    public static String formatMentions(Message message) {
-        String s = message.getContent();
-
-        for (User mention: message.getMentions()) {
-            DiscordBridge.getInstance().getLogger().info("Found Mention: @" + mention.getName() + ":" + mention.getId());
-            s = s.replace("<@"+mention.getId()+">","@" + mention.getName());
-            s = s.replace("<@!"+mention.getId()+">","@" + mention.getName()); // Change to getNickname() When supported
-        }
-        return s;
-    }
-
-    public static TextColor resolveTextColor(String s) {
-        switch (s.toUpperCase()){
-            case "§0":
-            case "&0":
-            case "000000":
-                return TextColors.BLACK;
-            case "§1":
-            case "&1":
-            case "0000AA":
-                return TextColors.DARK_BLUE;
-            case "§2":
-            case "&2":
-            case "00AA00":
-                return TextColors.DARK_GREEN;
-            case "§3":
-            case "&3":
-            case "00AAAA":
-                return TextColors.DARK_AQUA;
-            case "§4":
-            case "&4":
-            case "AA0000":
-                return TextColors.DARK_RED;
-            case "§5":
-            case "&5":
-            case "AA00AA":
-                return TextColors.DARK_PURPLE;
-            case "§6":
-            case "&6":
-            case "FFAA00":
-                return TextColors.GOLD;
-            case "§7":
-            case "&7":
-            case "AAAAAA":
-                return TextColors.GRAY;
-            case "§8":
-            case "&8":
-            case "555555":
-                return TextColors.DARK_GRAY;
-            case "§9":
-            case "&9":
-            case "5555FF":
-                return TextColors.BLUE;
-            case "§a":
-            case "&a":
-            case "55FF55":
-                return TextColors.GREEN;
-            case "§b":
-            case "&b":
-            case "55FFFF":
-                return TextColors.AQUA;
-            case "§c":
-            case "&c":
-            case "FF5555":
-                return TextColors.RED;
-            case "§d":
-            case "&d":
-            case "FF55FF":
-                return TextColors.LIGHT_PURPLE;
-            case "§e":
-            case "&e":
-            case "FFFF55":
-                return TextColors.YELLOW;
-            case "§f":
-            case "&f":
-            case "FFFFFF":
-                return TextColors.WHITE;
-            default: return TextColors.RESET;
-        }
-    }
-
-    public static String replacePlaceholders(ChannelConfig config, Message message){
-        String s = config.minecraft.chatTemplate;
-        s = s.replace("%a", message.getAuthor().getName());
-        // Javacord doesn't support nicknames yet!
-        //s = s.replace("%n", message.getAuthor().getNickname());
-        int position = 0;
-        String roleName = config.minecraft.defaultRole;
-        Color roleColor;
-        for (Role role: message.getAuthor().getRoles(message.getChannelReceiver().getServer())){
-            if (role.getPosition() > position) {
-                position = role.getPosition();
-                roleName = role.getName();
-                roleColor = role.getColor();
-            }
-        }
-        s = true ? s.replace("%r", roleName): s.replace("%r", roleColor + roleName);
-
-        return String.format(s, TextUtil.formatDiscordMessage(message.getContent()));
     }
 
     private static StyleTuple getLastColourAndStyle(Text text, StyleTuple current) {

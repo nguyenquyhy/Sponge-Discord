@@ -4,6 +4,7 @@ import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
+import com.nguyenquyhy.discordbridge.utils.ColorUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.message.MessageAttachment;
@@ -27,11 +28,10 @@ public class MessageHandler {
         Logger logger = mod.getLogger();
         GlobalConfig config = mod.getConfig();
 
-        String content = TextUtil.formatDiscordMessage(TextUtil.formatMentions(message));
         for (ChannelConfig channelConfig : config.channels) {
             if (config.prefixBlacklist != null) {
                 for (String prefix : config.prefixBlacklist) {
-                    if (StringUtils.isNotBlank(prefix) && content.startsWith(prefix)) {
+                    if (StringUtils.isNotBlank(prefix) && message.getContent().startsWith(prefix)) {
                         return;
                     }
                 }
@@ -46,7 +46,7 @@ public class MessageHandler {
                     && channelConfig.minecraft != null
                     && StringUtils.isNotBlank(channelConfig.minecraft.chatTemplate)
                     && message.getChannelReceiver().getId().equals(channelConfig.discordId)) {
-                Text messageText = TextUtil.formatForMinecraft(TextUtil.replacePlaceholders(channelConfig, message));
+                Text messageText = TextUtil.formatUrl(TextUtil.formatForMinecraft(channelConfig, message));
                 if (config.linkDiscordAttachments
                         && StringUtils.isNotBlank(channelConfig.minecraft.attachmentTemplate)
                         && message.getAttachments() != null) {
@@ -54,7 +54,7 @@ public class MessageHandler {
                         String spacing = message.getContent().equals("") ?  "" : " ";
                         messageText = Text.join(messageText,
                                 Text.builder(spacing + channelConfig.minecraft.attachmentTemplate)
-                                .color(TextUtil.resolveTextColor(channelConfig.minecraft.attachmentColor))
+                                .color(ColorUtil.getTextColor(channelConfig.minecraft.attachmentColor))
                                 .onClick(TextActions.openUrl(attachment.getUrl()))
                                 .onHover(TextActions.showText(Text.of(channelConfig.minecraft.attachmentHoverTemplate)))
                                 .build());
