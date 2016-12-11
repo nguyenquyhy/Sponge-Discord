@@ -4,6 +4,8 @@
   "botDiscordGame": "Minecraft",
   "prefixBlacklist": ["!"],
   "ignoreBots": false,
+  "consoleCommandPrefix": "/",
+  "consoleCommandRole": ["Owner"],
   "minecraftBroadcastTemplate": "&2<BROADCAST> %s",
   "channels": [
     {
