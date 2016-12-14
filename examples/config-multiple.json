@@ -4,12 +4,12 @@
   "botDiscordGame": "Minecraft",
   "prefixBlacklist": ["!"],
   "ignoreBots": false,
-  "consoleCommandPrefix": "/",
-  "consoleCommandRole": ["Owner"],
   "minecraftBroadcastTemplate": "&2<BROADCAST> %s",
   "channels": [
     {
       "discordId": "DISCORD_PUBLIC_CHANNEL_ID",
+      "consoleCommandPrefix": "/",
+  	  "consoleCommandRole": ["Owner"],
       "discordInviteCode": "DISCORD_INVITATION_CODE",
       "discord": {
         "publicChat": {

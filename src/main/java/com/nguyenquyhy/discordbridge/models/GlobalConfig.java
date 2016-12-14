@@ -20,8 +20,6 @@ public class GlobalConfig {
         prefixBlacklist = new ArrayList<>();
         ignoreBots = false;
         botDiscordGame = "";
-        consoleCommandPrefix = "/";
-        consoleCommandRole = new ArrayList<>();
         minecraftBroadcastTemplate = "&2<BROADCAST> %s";
         botToken = "";
     }
@@ -36,10 +34,6 @@ public class GlobalConfig {
     public Boolean ignoreBots;
     @Setting
     public String botDiscordGame;
-    @Setting
-    public String consoleCommandPrefix;
-    @Setting
-    public List<String> consoleCommandRole;
     @Setting
     public String minecraftBroadcastTemplate;
     @Setting

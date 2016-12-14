@@ -68,14 +68,14 @@ public class MessageHandler {
                     }
                 }
                 
-                if (message.getContent().startsWith(config.consoleCommandPrefix)) {
+                if (message.getContent().startsWith(channelConfig.consoleCommandPrefix)) {
                 	Channel channel = mod.getBotClient().getChannelById(channelConfig.discordId);
                 	Collection<Role> roles = message.getAuthor().getRoles(message.getChannelReceiver().getServer());
                   	for (Role role : roles) {
-                  		for (String roleConf : config.consoleCommandRole) {
+                  		for (String roleConf : channelConfig.consoleCommandRole) {
                   			if(role.getName().contains(roleConf)){
                   	            logger.info(message.getAuthor().getName() + " just ran a console command from discord: " + message.getContent());
-                  	            String cmd = message.getContent().substring(config.consoleCommandPrefix.length());
+                  	            String cmd = message.getContent().substring(channelConfig.consoleCommandPrefix.length());
                   	            CommandResult output = Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
                   	            //channel.sendMessage(output); //<- would be nice to get the CommandOutput (/op Player > Opped Player)
                   	            return;
