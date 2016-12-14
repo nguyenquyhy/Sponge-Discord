@@ -72,7 +72,7 @@ Configuration is stored in `config.json` file.
   - `ignoreBots`: ignore all messages from any Discord Bots _(thanks, Vankka)_
   - `channels`: a list of channel configurations
 - Channel config
-  - `discordId`: the ID of the Discord channel (usually a 18-digit number) [How to obtain?](https://github.com/VankkaGithub/DiscordBridge/blob/master/README.md#how-to-get-channel-id)
+  - `discordId`: the ID of the Discord channel (usually a 18-digit number) [How to obtain?](https://github.com/nguyenquyhy/DiscordBridge/blob/master/README.md#how-to-get-channel-id)
   - `consoleCommandPrefix` a prefix to running a console command _(thanks, Vankka)_
   - `consoleCommandRole` roles allowed to run console commands (`["Owner", "Dev"]`) _(thanks, Vankka)_
   - `discord`: templates in Discord
