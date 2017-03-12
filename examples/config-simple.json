@@ -9,6 +9,8 @@
     {
       "discordId": "DISCORD_PUBLIC_CHANNEL_ID",
       "discordInviteCode": "DISCORD_INVITATION_CODE",
+      "consoleCommandPrefix": "/",
+  	  "consoleCommandRole": ["Owner"],
       "discord": {
         "publicChat": {
           "authenticatedChatTemplate": "%s",

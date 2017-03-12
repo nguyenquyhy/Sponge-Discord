@@ -1,5 +1,8 @@
 package com.nguyenquyhy.discordbridge.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -13,6 +16,8 @@ public class ChannelConfig {
      */
     public ChannelConfig() {
         discordId = "DISCORD_CHANNEL_ID";
+        consoleCommandPrefix = "/";
+        consoleCommandRole = new ArrayList<>();
     }
 
     /**
@@ -27,6 +32,10 @@ public class ChannelConfig {
 
     @Setting
     public String discordId;
+    @Setting
+    public String consoleCommandPrefix;
+    @Setting
+    public List<String> consoleCommandRole;
     @Setting
     public ChannelDiscordConfig discord;
     @Setting

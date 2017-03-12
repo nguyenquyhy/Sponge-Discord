@@ -8,6 +8,8 @@
   "channels": [
     {
       "discordId": "DISCORD_PUBLIC_CHANNEL_ID",
+      "consoleCommandPrefix": "/",
+  	  "consoleCommandRole": ["Owner"],
       "discordInviteCode": "DISCORD_INVITATION_CODE",
       "discord": {
         "publicChat": {

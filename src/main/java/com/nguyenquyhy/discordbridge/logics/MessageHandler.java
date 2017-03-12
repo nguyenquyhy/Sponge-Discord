@@ -6,12 +6,15 @@ import com.nguyenquyhy.discordbridge.models.ChannelMinecraftConfigCore;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.TextUtil;
+
+import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.message.MessageAttachment;
 import de.btobastian.javacord.entities.permissions.Role;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.serializer.TextSerializers;
@@ -63,6 +66,24 @@ public class MessageHandler {
                             break;
                         }
                     }
+                }
+                
+                if (message.getContent().startsWith(channelConfig.consoleCommandPrefix)) {
+                	Channel channel = mod.getBotClient().getChannelById(channelConfig.discordId);
+                	Collection<Role> roles = message.getAuthor().getRoles(message.getChannelReceiver().getServer());
+                  	for (Role role : roles) {
+                  		for (String roleConf : channelConfig.consoleCommandRole) {
+                  			if(role.getName().contains(roleConf)){
+                  	            logger.info(message.getAuthor().getName() + " just ran a console command from discord: " + message.getContent());
+                  	            String cmd = message.getContent().substring(channelConfig.consoleCommandPrefix.length());
+                  	            CommandResult output = Sponge.getCommandManager().process(Sponge.getServer().getConsole(), cmd);
+                  	            //channel.sendMessage(output); //<- would be nice to get the CommandOutput (/op Player > Opped Player)
+                  	            return;
+                  			}
+                  		}
+                  	}
+                  	channel.sendMessage(":lock: You do not have access to running console commands from Discord");
+                  	return;
                 }
 
                 if (StringUtils.isNotBlank(minecraftConfig.chatTemplate)) {
