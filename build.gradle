@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build', 'shadowJar'
 
 group = 'com.nguyenquyhy'
-version = '2.4.0'
+version = '2.5.1'
 description = 'A plugin to connect Discord and Minecraft'
 sourceCompatibility = 1.8
 
@@ -25,6 +25,10 @@ repositories {
     maven {
         name 'javacord-repo'
         url 'http://repo.bastian-oppermann.de'
+    }
+    maven {
+        name 'twitter'
+        url 'http://twitter4j.org/maven2'
     }
 }
 
@@ -43,6 +47,9 @@ dependencies {
     compile('org.spongepowered:spongeapi:4.1.0')
     //compile('org.spongepowered:spongeapi:5.0.0')
     compile files('libs/javacord-2.0.14-shaded.jar')
+    compile('org.twitter4j:twitter4j-core:4.0.4')
+    compile('org.twitter4j:twitter4j-async:4.0.4')
+    compile('org.twitter4j:twitter4j-stream:4.0.4')
 //    compile('de.btobastian.javacord:javacord:2.0.11:shaded')
 //    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
 //    compile 'org.apache.httpcomponents:httpcore:4.3.2'
@@ -64,6 +71,9 @@ shadowJar {
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')
         include dependency('org.apache.httpcomponents:httpclient')
+        include dependency('org.twitter4j:twitter4j-core')
+        include dependency('org.twitter4j:twitter4j-async')
+        include dependency('org.twitter4j:twitter4j-stream')
 //        include dependency('com.googlecode.json-simple:json-simple')
 //        include dependency('org.java-websocket:Java-WebSocket')
 //        include dependency('net.jodah:typetools')

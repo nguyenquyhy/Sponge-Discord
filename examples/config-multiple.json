@@ -50,6 +50,12 @@
         "deathTemplate": "**%s**"
       }
     },
+      "twitter": {
+        "twitterAccessToken": "",
+        "twitterAccessTokenSecret": "",
+        "twitterConsumerSecret": "",
+        "twitterConsumerKey": ""
+      },
     {
       "discordId": "DISCORD_STAFF_BROADCAST_CHANNEL_ID",
       "minecraft": {

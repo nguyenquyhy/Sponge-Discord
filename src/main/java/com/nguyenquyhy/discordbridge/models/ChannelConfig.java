@@ -23,6 +23,8 @@ public class ChannelConfig {
         discord.initializeDefault();
         minecraft = new ChannelMinecraftConfig();
         minecraft.initializeDefault();
+        twitter = new TwitterConfig();
+        twitter.initializeDefault();
     }
 
     @Setting
@@ -31,6 +33,8 @@ public class ChannelConfig {
     public ChannelDiscordConfig discord;
     @Setting
     public ChannelMinecraftConfig minecraft;
+    @Setting
+    public TwitterConfig twitter;
 
     public void migrate() {
         if (discord != null)

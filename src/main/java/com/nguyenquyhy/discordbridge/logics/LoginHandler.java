@@ -7,6 +7,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.nguyenquyhy.discordbridge.DiscordBridge;
 import com.nguyenquyhy.discordbridge.database.IStorage;
+import com.nguyenquyhy.discordbridge.listeners.TwitterUpdateListener;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
@@ -16,6 +17,8 @@ import de.btobastian.javacord.Javacord;
 import de.btobastian.javacord.entities.Channel;
 import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.listener.message.MessageCreateListener;
+import twitter4j.TwitterException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -83,7 +86,7 @@ public class LoginHandler {
                 } else {
                     client = Javacord.getApi(cachedToken, false);
                 }
-
+                
                 prepareHumanClient(client, player);
                 return true;
             }
@@ -207,6 +210,17 @@ public class LoginHandler {
                     logger.info(text);
 
                 mod.setBotClient(client);
+                
+                //Register Twitter Listener, Requires BotClient != null
+                try {
+        	    new TwitterUpdateListener();
+        	} catch (IllegalStateException e) {
+        	    // TODO Auto-generated catch block
+        	    e.printStackTrace();
+        	} catch (TwitterException e) {
+        	    // TODO Auto-generated catch block
+        	    e.printStackTrace();
+        	}
 
                 for (ChannelConfig channelConfig : config.channels) {
                     if (StringUtils.isNotBlank(channelConfig.discordId)) {
@@ -320,6 +334,7 @@ public class LoginHandler {
                 logger.info("Bot account has connected to Discord channel " + channelConfig.discordId + ".");
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
                     ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
+                    ChannelUtil.setDescription(channel, "Online - Number of Players: 0");
                 }
             }
         }
