@@ -1,6 +1,7 @@
 package com.nguyenquyhy.discordbridge.logics;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
+import com.nguyenquyhy.discordbridge.discordcommands.CommandHandler;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.ChannelMinecraftConfigCore;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
@@ -33,6 +34,7 @@ public class MessageHandler {
         GlobalConfig config = mod.getConfig();
 
         for (ChannelConfig channelConfig : config.channels) {
+            
             if (config.prefixBlacklist != null) {
                 for (String prefix : config.prefixBlacklist) {
                     if (StringUtils.isNotBlank(prefix) && message.getContent().startsWith(prefix)) {
@@ -45,6 +47,12 @@ public class MessageHandler {
             }
             if (message.getNonce() != null && message.getNonce().equals(ChannelUtil.SPECIAL_CHAR + ChannelUtil.BOT_RANDOM)) {
                 return;
+            }
+            if(message.getContent().startsWith("!")){
+        	
+        	message.delete();
+        	CommandHandler.handle(message);
+        	return;
             }
             if (StringUtils.isNotBlank(channelConfig.discordId)
                     && channelConfig.minecraft != null
