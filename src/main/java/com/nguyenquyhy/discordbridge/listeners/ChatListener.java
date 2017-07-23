@@ -1,6 +1,8 @@
 package com.nguyenquyhy.discordbridge.listeners;
 
 import com.nguyenquyhy.discordbridge.DiscordBridge;
+import com.nguyenquyhy.discordbridge.hooks.Boop;
+import com.nguyenquyhy.discordbridge.hooks.Nucleus;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
 import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
@@ -16,6 +18,9 @@ import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.channel.MessageChannel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,7 +29,8 @@ import java.util.UUID;
  */
 public class ChatListener {
     DiscordBridge mod = DiscordBridge.getInstance();
-
+    //0 - CustomNPC's
+    List<String> fakePlayerUUIDs = new ArrayList<String>(Arrays.asList("c9c843f8-4cb1-4c82-aa61-e264291b7bd6"));
     /**
      * Send chat from Minecraft to Discord
      *
@@ -38,15 +44,16 @@ public class ChatListener {
         sendToDiscord(event);
         formatForMinecraft(event);
     }
-
     private void sendToDiscord(MessageChannelEvent.Chat event) {
         GlobalConfig config = mod.getConfig();
 
         boolean isStaffChat = false;
         if (event.getChannel().isPresent()) {
             MessageChannel channel = event.getChannel().get();
-            if (channel.getClass().getName().equals("io.github.nucleuspowered.nucleus.modules.staffchat.StaffChatMessageChannel"))
+            if (channel.getClass().getName().equals(Nucleus.getStaffMessageChannelClass()))
                 isStaffChat = true;
+            else if(channel.getClass().getName().equals(Boop.getMessageChannelClass()))
+        	isStaffChat = false;
             else if (!channel.getClass().getName().startsWith("org.spongepowered.api.text.channel.MessageChannel"))
                 return; // Ignore all other types
         }
@@ -59,7 +66,10 @@ public class ChatListener {
 
         if (player.isPresent()) {
             UUID playerId = player.get().getUniqueId();
-
+            
+            //Filters out fake player messages, such as CustomNPC messages. 
+            if(fakePlayerUUIDs.contains(playerId.toString())) return;
+            
             DiscordAPI client = mod.getBotClient();
             boolean isBotAccount = true;
             if (mod.getHumanClients().containsKey(playerId)) {

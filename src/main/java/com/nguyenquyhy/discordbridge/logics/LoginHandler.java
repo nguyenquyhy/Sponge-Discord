@@ -83,7 +83,7 @@ public class LoginHandler {
                 } else {
                     client = Javacord.getApi(cachedToken, false);
                 }
-
+                
                 prepareHumanClient(client, player);
                 return true;
             }
@@ -320,6 +320,7 @@ public class LoginHandler {
                 logger.info("Bot account has connected to Discord channel " + channelConfig.discordId + ".");
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
                     ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
+                    ChannelUtil.setDescription(channel, "Online - Number of Players: 0");
                 }
             }
         }

@@ -21,10 +21,9 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
@@ -57,6 +56,7 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
+    private int playerCount=0;
 
     @Listener
     public void onPreInitialization(GamePreInitializationEvent event) throws IOException, ObjectMappingException {
@@ -69,10 +69,11 @@ public class DiscordBridge {
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
-        CommandRegistry.register();
+    public void onServerStarting(GameStartingServerEvent event) {
+	CommandRegistry.register();
         LoginHandler.loginBotAccount();
     }
+
 
     @Listener
     public void onServerStop(GameStoppingServerEvent event) {
@@ -84,11 +85,14 @@ public class DiscordBridge {
                     Channel channel = botClient.getChannelById(channelConfig.discordId);
                     if (channel != null) {
                         ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
+                        ChannelUtil.setDescription(channel, "Offline");
                     } else {
                         ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
                     }
                 }
             }
+            
+            
         }
     }
 
@@ -148,6 +152,12 @@ public class DiscordBridge {
         }
     }
 
+    public void setPlayerCount(int change){
+	playerCount+=change;
+    }
+    public int getPlayerCount(){
+	return playerCount;
+    }
     public void removeAndLogoutClient(UUID player) {
         if (player == null) {
             consoleClient.disconnect();
