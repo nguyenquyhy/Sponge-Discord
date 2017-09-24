@@ -32,8 +32,13 @@ import java.util.*;
 /**
  * Created by Hy on 1/4/2016.
  */
-@Plugin(id = "discordbridge", name = "Discord Bridge", version = "2.3.0",
-        description = "A Sponge plugin to connect your Minecraft server with Discord", authors = {"Hy", "Mohron"})
+@Plugin(
+    id = "discordbridge",
+    name = "Discord Bridge",
+    version = "2.4.1",
+    description = "A Sponge plugin to connect your Minecraft server with Discord",
+    authors = {"Hy", "Mohron"}
+)
 public class DiscordBridge {
 
     private DiscordAPI consoleClient = null;
@@ -79,8 +84,8 @@ public class DiscordBridge {
         if (botClient != null) {
             for (ChannelConfig channelConfig : config.channels) {
                 if (StringUtils.isNotBlank(channelConfig.discordId)
-                        && channelConfig.discord != null
-                        && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
+                    && channelConfig.discord != null
+                    && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
                     Channel channel = botClient.getChannelById(channelConfig.discordId);
                     if (channel != null) {
                         ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
