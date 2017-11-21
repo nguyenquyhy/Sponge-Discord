@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id "com.qixalite.spongestart" version "1.5.2"
+    id 'com.qixalite.spongestart2' version '3.0.1'
     id 'com.github.johnrengelman.shadow' version '1.2.3'
     //id 'org.spongepowered.plugin' version '0.5.1'
 }
@@ -8,7 +8,7 @@ plugins {
 defaultTasks 'build', 'shadowJar'
 
 group = 'com.nguyenquyhy'
-version = '2.4.1'
+version = '2.4.2'
 description = 'A plugin to connect Discord and Minecraft'
 sourceCompatibility = 1.8
 
@@ -26,27 +26,32 @@ repositories {
         name 'javacord-repo'
         url 'http://repo.bastian-oppermann.de'
     }
+    maven {
+        name 'jitpack.io'
+        url 'https://jitpack.io'
+    }
+    maven {
+        name = "Nucleus"
+        url = "http://repo.drnaylor.co.uk/artifactory/list/minecraft"
+    }
 }
 
-spongestart{
-    eula true
-
-    //optional configs
-    //spongeVanillaBuild 'LATEST'
-    spongeVanillaBuild '1.10.2-5.1.0-BETA-366'
-    //spongeForgeBuild 'LATEST'
-    //forgeServerFolder 'run'
-    //vanillaServerFolder 'run/vanilla'
+spongestart {
+    online 'false'
+    minecraft "1.10.2"
+    type "stable"
+    spongeForge "1.10.2-2477-5.2.0-BETA-2731"
 }
 
 dependencies {
-    compile('org.spongepowered:spongeapi:5.1.0')
-    compile('de.btobastian.javacord:javacord:2.0.17:shaded')
+    compile("org.spongepowered:spongeapi:${spongeapi}")
+    compile("de.btobastian.javacord:javacord:${javacord}:shaded")
+    compile("io.github.nucleuspowered:nucleus-api:${nucleus}")
 }
 
 shadowJar {
     dependencies {
-        include dependency('de.btobastian.javacord:javacord:2.0.17:shaded')
+        include dependency('de.btobastian.javacord:javacord')
         include dependency('commons-logging:commons-logging')
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')

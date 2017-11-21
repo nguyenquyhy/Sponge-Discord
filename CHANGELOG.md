@@ -1,5 +1,13 @@
 # CHANGE LOG
 
+## 2.4.2
+- Add support for sending a player first join message when Nucleus is present.
+
+## 2.4.1
+- Update Discord API to support categories.
+- Add Custom Emoji Handling.
+- Fix pinning a message on Discord sending a blank message to Minecraft.
+
 ## 2.4.0
 - Support sending message to Discord when a player die (check `deathTemplate`).
 - Discord Bridge now ignores only messages from Discord Brige and from the same server. Previously, the plugin ignores all messages from Discord Bridge regardless different servers.
