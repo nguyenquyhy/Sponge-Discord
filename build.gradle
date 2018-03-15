@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
 }
 
 defaultTasks 'build', 'shadowJar'
@@ -13,29 +13,20 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     maven {
-        name 'Sonatype'
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        name = 'Sonatype'
+        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
     maven {
-        name 'sponge'
-        url 'http://repo.spongepowered.org/maven'
+        name = 'sponge'
+        url = 'http://repo.spongepowered.org/maven'
     }
     jcenter()
 }
 
 dependencies {
     compile('org.spongepowered:spongeapi:7.0.0')
-    //compile('org.spongepowered:spongeapi:5.0.0')
-    //compile files('libs/javacord-2.0.14-shaded.jar')
-    compile 'net.dv8tion:JDA:3.4.0_320'
+    compile 'net.dv8tion:JDA:3.5.1_339'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
-//    compile('de.btobastian.javacord:javacord:2.0.11:shaded')
-//    compile "com.github.austinv11:Discord4j:2.4.9:shaded"
-//    compile 'org.apache.httpcomponents:httpcore:4.3.2'
-//    compile 'org.apache.httpcomponents:httpclient:4.3.3'
-//    compile 'org.java-websocket:Java-WebSocket:1.3.0'
-//    compile 'com.googlecode.json-simple:json-simple:1.1.1'
-//    compile 'net.jodah:typetools:0.4.3'
 }
 
 task fatJar(type: Jar) {
@@ -50,9 +41,6 @@ shadowJar {
         include dependency('org.apache.commons:commons-lang3')
         include dependency('org.apache.httpcomponents:httpcore')
         include dependency('org.apache.httpcomponents:httpclient')
-//        include dependency('com.googlecode.json-simple:json-simple')
-//        include dependency('org.java-websocket:Java-WebSocket')
-//        include dependency('net.jodah:typetools')
 
         relocate 'org.apache.http', 'shaded.apache.http'
         relocate 'org.apache.commons', 'shaded.apache.commons'
