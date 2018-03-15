@@ -4,8 +4,8 @@ import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List;
 
 public class ColorUtil {
     private static Map<Color, String> minecraftColors = new HashMap<>();
@@ -64,5 +64,13 @@ public class ColorUtil {
             }
         }
         return result;
+    }
+
+    public static String removeColor(String text) {
+        List<String> listColorCodes = new ArrayList<>(Arrays.asList("&0", "&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&A", "&B", "&C", "&D", "&E", "&F", "&M", "&N", "&L", "&K", "&O"));
+        for (String s : listColorCodes) {
+            text = text.replaceAll(s, "");
+        }
+        return text;
     }
 }

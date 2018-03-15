@@ -24,27 +24,33 @@ public class ClientConnectionListener {
 
     @Listener
     public void onJoin(ClientConnectionEvent.Join event, @First Player player) {
-        DiscordBridge mod = DiscordBridge.getInstance();
-        GlobalConfig config = mod.getConfig();
+        if (!player.hasPermission("nucleus.connectionmessages.disable")) {
+            DiscordBridge mod = DiscordBridge.getInstance();
+            GlobalConfig config = mod.getConfig();
 
-        boolean loggingIn = false;
-        if (!mod.getHumanClients().containsKey(player.getUniqueId())) {
-            loggingIn = LoginHandler.loginHumanAccount(player);
-        }
+            UUID playerId = player.getUniqueId();
 
-        if (!loggingIn && mod.getBotClient() != null) {
-            // Use Bot client to send joined message
-            for (ChannelConfig channelConfig : config.channels) {
-                if (StringUtils.isNotBlank(channelConfig.discordId)
-                        && channelConfig.discord != null
-                        && StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
-                    TextChannel channel = mod.getBotClient().getTextChannelById(channelConfig.discordId);
-                    if (channel != null) {
-                        String content = String.format(channelConfig.discord.joinedTemplate,
-                                TextUtil.escapeForDiscord(player.getName(), channelConfig.discord.joinedTemplate, "%s"));
-                        ChannelUtil.sendMessage(channel, content);
-                    } else {
-                        ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
+            boolean loggingIn = false;
+            if (!mod.getHumanClients().containsKey(playerId)) {
+                loggingIn = LoginHandler.loginHumanAccount(player);
+            }
+
+            if (!loggingIn && mod.getBotClient() != null) {
+                // Use Bot client to send joined message
+                for (ChannelConfig channelConfig : config.channels) {
+                    if (StringUtils.isNotBlank(channelConfig.discordId)
+                            && channelConfig.discord != null
+                            && StringUtils.isNotBlank(channelConfig.discord.joinedTemplate)) {
+                        TextChannel channel = mod.getBotClient().getTextChannelById(channelConfig.discordId);
+                        if (channel != null) {
+                            String content = String.format(channelConfig.discord.joinedTemplate,
+                                    TextUtil.escapeForDiscord(player.getName(), channelConfig.discord.joinedTemplate, "%s"));
+                            ChannelUtil.sendMessage(channel, content);
+                        } else {
+                            ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
+                        }
+                        mod.setPlayerCount(1);
+                        ChannelUtil.setDescription(channel, "Online - Number of Players: " + mod.getPlayerCount());
                     }
                 }
             }
@@ -53,30 +59,34 @@ public class ClientConnectionListener {
 
     @Listener
     public void onDisconnect(ClientConnectionEvent.Disconnect event, @First Player player) {
-        DiscordBridge mod = DiscordBridge.getInstance();
-        GlobalConfig config = mod.getConfig();
+        if (!player.hasPermission("nucleus.connectionmessages.disable")) {
+            DiscordBridge mod = DiscordBridge.getInstance();
+            GlobalConfig config = mod.getConfig();
 
-        UUID playerId = player.getUniqueId();
+            UUID playerId = player.getUniqueId();
 
-        JDA client = mod.getHumanClients().get(playerId);
-        if (client == null) client = mod.getBotClient();
-        if (client != null) {
-            for (ChannelConfig channelConfig : config.channels) {
-                if (StringUtils.isNotBlank(channelConfig.discordId)
-                        && channelConfig.discord != null
-                        && StringUtils.isNotBlank(channelConfig.discord.leftTemplate)) {
-                    TextChannel channel = client.getTextChannelById(channelConfig.discordId);
-                    if (channel != null) {
-                        String content = String.format(channelConfig.discord.leftTemplate,
-                                TextUtil.escapeForDiscord(player.getName(), channelConfig.discord.leftTemplate, "%s"));
-                        ChannelUtil.sendMessage(channel, content);
-                    } else {
-                        ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
+            JDA client = mod.getHumanClients().get(playerId);
+            if (client == null) client = mod.getBotClient();
+            if (client != null) {
+                for (ChannelConfig channelConfig : config.channels) {
+                    if (StringUtils.isNotBlank(channelConfig.discordId)
+                            && channelConfig.discord != null
+                            && StringUtils.isNotBlank(channelConfig.discord.leftTemplate)) {
+                        TextChannel channel = client.getTextChannelById(channelConfig.discordId);
+                        if (channel != null) {
+                            String content = String.format(channelConfig.discord.leftTemplate,
+                                    TextUtil.escapeForDiscord(player.getName(), channelConfig.discord.leftTemplate, "%s"));
+                            ChannelUtil.sendMessage(channel, content);
+                        } else {
+                            ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
+                        }
+                        mod.setPlayerCount(-1);
+                        ChannelUtil.setDescription(channel, "Online - Number of Players: " + mod.getPlayerCount());
                     }
+                    mod.removeAndLogoutClient(playerId);
+                    //unauthenticatedPlayers.remove(playerId);
+                    mod.getLogger().info(player.getName() + " has disconnected!");
                 }
-                mod.removeAndLogoutClient(playerId);
-                //unauthenticatedPlayers.remove(playerId);
-                mod.getLogger().info(player.getName() + " has disconnected!");
             }
         }
     }

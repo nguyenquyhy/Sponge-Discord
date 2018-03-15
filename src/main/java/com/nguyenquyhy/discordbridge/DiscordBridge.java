@@ -22,7 +22,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
-import org.spongepowered.api.event.game.state.GameStartedServerEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
@@ -58,6 +58,7 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
+    private int playerCount = 0;
 
     @Listener
     public void onInitialization(GameInitializationEvent event) throws IOException, ObjectMappingException {
@@ -74,7 +75,7 @@ public class DiscordBridge {
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStarting(GameStartingServerEvent event) {
         CommandRegistry.register();
         LoginHandler.loginBotAccount();
     }
@@ -84,11 +85,12 @@ public class DiscordBridge {
         if (botClient != null) {
             for (ChannelConfig channelConfig : config.channels) {
                 if (StringUtils.isNotBlank(channelConfig.discordId)
-                    && channelConfig.discord != null
-                    && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
+                        && channelConfig.discord != null
+                        && StringUtils.isNotBlank(channelConfig.discord.serverDownMessage)) {
                     TextChannel channel = botClient.getTextChannelById(channelConfig.discordId);
                     if (channel != null) {
                         ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
+                        ChannelUtil.setDescription(channel, "Offline");
                     } else {
                         ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
                     }
@@ -151,6 +153,14 @@ public class DiscordBridge {
         } else {
             humanClients.put(player, client);
         }
+    }
+
+    public void setPlayerCount(int change) {
+        playerCount += change;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     public void removeAndLogoutClient(UUID player) {
