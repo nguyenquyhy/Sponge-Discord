@@ -52,6 +52,7 @@
         "leftTemplate": "_%s just left the server_",
         "serverUpMessage": "Server has started.",
         "serverDownMessage": "Server has stopped.",
+        "firstJoinTemplate": "_Welcome **%a** to the server!_",
         "deathTemplate": "**%s**"
       }
     },

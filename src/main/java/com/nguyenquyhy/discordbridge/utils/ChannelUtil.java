@@ -14,4 +14,8 @@ public class ChannelUtil {
     public static void sendMessage(TextChannel channel, String content) {
         channel.sendMessage(content).nonce(SPECIAL_CHAR + BOT_RANDOM).queue();
     }
+
+    public static void setDescription(TextChannel channel, String content){
+        channel.getManager().setTopic(content);
+    }
 }

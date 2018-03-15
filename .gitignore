@@ -5,6 +5,7 @@
 /build
 /classes
 /run
+/out
 /*.iml
 /bin/
 /.settings/

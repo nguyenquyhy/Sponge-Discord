@@ -5,6 +5,7 @@ import com.nguyenquyhy.discordbridge.database.IStorage;
 import com.nguyenquyhy.discordbridge.listeners.ChatListener;
 import com.nguyenquyhy.discordbridge.listeners.ClientConnectionListener;
 import com.nguyenquyhy.discordbridge.listeners.DeathListener;
+import com.nguyenquyhy.discordbridge.listeners.FirstJoinListener;
 import com.nguyenquyhy.discordbridge.logics.ConfigHandler;
 import com.nguyenquyhy.discordbridge.logics.LoginHandler;
 import com.nguyenquyhy.discordbridge.models.ChannelConfig;
@@ -12,7 +13,7 @@ import com.nguyenquyhy.discordbridge.models.GlobalConfig;
 import com.nguyenquyhy.discordbridge.utils.ChannelUtil;
 import com.nguyenquyhy.discordbridge.utils.ErrorMessages;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.TextChannel;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +21,9 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.event.Listener;
-import org.spongepowered.api.event.game.state.*;
+import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GameStartingServerEvent;
+import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
 import java.io.IOException;
@@ -55,6 +58,7 @@ public class DiscordBridge {
     private IStorage storage;
 
     private static DiscordBridge instance;
+    private int playerCount = 0;
 
     @Listener
     public void onInitialization(GameInitializationEvent event) throws IOException, ObjectMappingException {
@@ -64,10 +68,14 @@ public class DiscordBridge {
         Sponge.getEventManager().registerListeners(this, new ChatListener());
         Sponge.getEventManager().registerListeners(this, new ClientConnectionListener());
         Sponge.getEventManager().registerListeners(this, new DeathListener());
+
+        if (Sponge.getPluginManager().isLoaded("nucleus")) {
+            Sponge.getEventManager().registerListeners(this, new FirstJoinListener());
+        }
     }
 
     @Listener
-    public void onServerStart(GameStartedServerEvent event) {
+    public void onServerStarting(GameStartingServerEvent event) {
         CommandRegistry.register();
         LoginHandler.loginBotAccount();
     }
@@ -82,6 +90,7 @@ public class DiscordBridge {
                     TextChannel channel = botClient.getTextChannelById(channelConfig.discordId);
                     if (channel != null) {
                         ChannelUtil.sendMessage(channel, channelConfig.discord.serverDownMessage);
+                        ChannelUtil.setDescription(channel, "Offline");
                     } else {
                         ErrorMessages.CHANNEL_NOT_FOUND.log(channelConfig.discordId);
                     }
@@ -144,6 +153,14 @@ public class DiscordBridge {
         } else {
             humanClients.put(player, client);
         }
+    }
+
+    public void setPlayerCount(int change) {
+        playerCount += change;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
     }
 
     public void removeAndLogoutClient(UUID player) {

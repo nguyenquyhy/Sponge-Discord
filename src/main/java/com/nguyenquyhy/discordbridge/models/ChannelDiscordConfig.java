@@ -22,6 +22,7 @@ public class ChannelDiscordConfig {
         serverDownMessage = "Server has stopped.";
         broadcastTemplate = "_<BROADCAST> %s_";
         deathTemplate = "**%s**";
+        firstJoinTemplate = "_Welcome **%a** to the server!_";
     }
 
     @Setting
@@ -40,6 +41,8 @@ public class ChannelDiscordConfig {
     public String broadcastTemplate;
     @Setting
     public String deathTemplate;
+    @Setting
+    public  String firstJoinTemplate;
 
 
     @Deprecated

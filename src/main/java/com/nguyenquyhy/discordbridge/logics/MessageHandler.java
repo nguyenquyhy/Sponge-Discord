@@ -35,7 +35,7 @@ public class MessageHandler {
         for (ChannelConfig channelConfig : config.channels) {
             if (config.prefixBlacklist != null) {
                 for (String prefix : config.prefixBlacklist) {
-                    if (StringUtils.isNotBlank(prefix) && message.getContent().startsWith(prefix)) {
+                    if (StringUtils.isNotBlank(prefix) && message.getContentDisplay().startsWith(prefix)) {
                         return;
                     }
                 }
@@ -76,7 +76,7 @@ public class MessageHandler {
                             && StringUtils.isNotBlank(minecraftConfig.attachment.template)
                             && message.getAttachments() != null) {
                         for (Message.Attachment attachment : message.getAttachments()) {
-                            String spacing = StringUtils.isBlank(message.getContent()) ? "" : " ";
+                            String spacing = StringUtils.isBlank(message.getContentDisplay()) ? "" : " ";
                             Text.Builder builder = Text.builder()
                                     .append(TextSerializers.FORMATTING_CODE.deserialize(spacing + minecraftConfig.attachment.template));
                             if (minecraftConfig.attachment.allowLink) {

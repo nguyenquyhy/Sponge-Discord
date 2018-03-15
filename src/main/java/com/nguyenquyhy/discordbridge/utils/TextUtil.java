@@ -151,7 +151,7 @@ public class TextUtil {
         if (game != null) s = s.replace("%g", game);
 
         // Add the actual message
-        s = String.format(s, message.getContent());
+        s = String.format(s, message.getContentDisplay());
 
         // Replace Discord-specific stuffs
         s = TextUtil.formatDiscordMessage(s);

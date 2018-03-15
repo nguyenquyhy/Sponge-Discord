@@ -304,6 +304,7 @@ public class LoginHandler {
                 logger.info("Bot account has connected to Discord channel " + channelConfig.discordId + ".");
                 if (StringUtils.isNotBlank(channelConfig.discord.serverUpMessage)) {
                     ChannelUtil.sendMessage(channel, channelConfig.discord.serverUpMessage);
+                    ChannelUtil.setDescription(channel, "Online - Number of Players: " + mod.getPlayerCount());
                 }
             }
         }
