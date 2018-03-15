@@ -20,13 +20,22 @@ repositories {
         name = 'sponge'
         url = 'http://repo.spongepowered.org/maven'
     }
+    maven {
+        name = 'jitpack.io'
+        url = 'https://jitpack.io'
+    }
+    maven {
+        name = "Nucleus"
+        url = "http://repo.drnaylor.co.uk/artifactory/list/minecraft"
+    }
     jcenter()
 }
 
 dependencies {
-    compile('org.spongepowered:spongeapi:7.0.0')
+    compile 'org.spongepowered:spongeapi:7.+'
     compile 'net.dv8tion:JDA:3.5.1_339'
     compile 'com.mashape.unirest:unirest-java:1.4.9'
+    compile 'io.github.nucleuspowered:nucleus-api:+'
 }
 
 task fatJar(type: Jar) {
@@ -46,3 +55,5 @@ shadowJar {
         relocate 'org.apache.commons', 'shaded.apache.commons'
     }
 }
+
+build.dependsOn(shadowJar)
